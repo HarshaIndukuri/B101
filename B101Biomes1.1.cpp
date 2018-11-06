@@ -1,4 +1,3 @@
-
 /*Biome Types
 	1. Plains: weak to Anthrax, Bubonic Plague; resistant to Tuberculosis
 	2. Mountains: weak to Tuberculosis, Anthrax; resistant to Cholera 
@@ -203,7 +202,6 @@ class place
 	{
 		cqr=0;
 	}
-	int assignbcr(microbe *micro); //ncqr is a global/in scope int variable wrt to the object denoting how many biomes have been conquered 
 	void gotoneigh(place *current)
 	{
 		int b;
@@ -211,10 +209,7 @@ class place
 		srand(time(NULL));	
 		b=(rand()%5)+1; 		
 		if(neighbour[b]->cqr==0)
-		{
-			current=current->neighbour[b];
-			current->assignbcr(micro);
-		}
+		current=this->neighbour[b];
 		else
 		{
 			int chkemp=0;
@@ -229,24 +224,21 @@ class place
 			cout<<endl<<"Continent CONQUERED!";
 			//gotta think of intercontinental migration
 		}
-	}	
-}Biome[36],*current;
-int countdn(microbe *micro, place *current)
-{
-	current->assignbcr(micro);
-	while(micro->BER!=0)
+	}
+	int assignbcr(microbe *micro); //ncqr is a global/in scope int variable wrt to the object denoting how many biomes have been conquered 
+	int countdn(microbe *micro, place *current)
 	{
-		current->BCR--;
-		micro->BER--;
-		micro->BMR--;
-		if(BMR==0)
-		mutate(micro->BMR,micro->BER);//call functions and code that runs for each step here and modify the parameters of this function as necessary
-		if(BCR==0)
+		assignbcr(micro);
+		while(current->BCR!=0)
 		{
-			current->gotoneigh(current);
+			current->BCR--;
+			micro->BER--;
+			micro->BMR--;
+			if(BMR==0)
+			mutate(micro->BMR,micro->BER);//call functions and code that runs for each step here and modify the parameters of this function as necessary
 		}
 	}
-}
+}Biome[36],*current;
 void Africa(place *current, microbe *micro)
 {
 	int m=rand()%100;
@@ -377,7 +369,9 @@ int place::assignbcr(microbe *micro)
 		else if(micro->ncqr>30)
 		BCR+=2;
 }
-
+int attack()
+{
+	
 int main()
 {
 	int a,b,c;
@@ -480,10 +474,10 @@ int main()
   cout<<"Press any number to continue."<<endl;
   cin>>b;
   cout<<"TUBERCULOSIS."<<endl;
-  cout<<"Caused by the bacterium Mycobacterium tuBERculosis, tuBERculosis, a.k.a. consumption, phthisis or just TB, is a deadly disease that spreads via air."<<endl;
+  cout<<"Caused by the bacterium Mycobacterium tuberculosis, tuberculosis, a.k.a. consumption, phthisis or just TB, is a deadly disease that spreads via air."<<endl;
   cout<<"Increasing population presents a problem in maintaining people at a 'safe' distance."<<endl;
   cout<<"This could be a jackpot!"<<endl;
-  cout<<"TuBERculosis is strong in Mountains, Forests, and Island biomes, but is weak in Plains biomes."<<endl;
+  cout<<"Tuberculosis is strong in Mountains, Forests, and Island biomes, but is weak in Plains biomes."<<endl;
   cout<<"Press any number to continue."<<endl;
   cin>>c;
   cout<<"Bubonic Plague. The only disease that does not need bold case."<<endl;
@@ -541,6 +535,10 @@ int main()
 		Biome[i].biometype=((i+1)%6)+1;
 		Biome[i].continent=(i/6)+1;
 	}
+			
+	return 0;
+}
+
 			
 	return 0;
 }
